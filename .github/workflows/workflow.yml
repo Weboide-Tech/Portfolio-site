@@ -36,7 +36,7 @@ jobs:
         KEY: ${{ secrets.AWS_EC2_KEY }}
         IMAGE: ${{ secrets.DOCKER_USERNAME }}/my-react-app:latest
       run: |
-        echo "$KEY" > key.pem
+        echo -e "$KEY" > key.pem
         chmod 400 key.pem
         ssh -o StrictHostKeyChecking=no -i key.pem $USER@$HOST << EOF
           docker pull $IMAGE
