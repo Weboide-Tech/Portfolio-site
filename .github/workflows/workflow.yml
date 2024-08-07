@@ -28,6 +28,12 @@ jobs:
         context: .
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/my-react-app:latest
+    - name: Set up SSH
+      run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "StrictHostKeyChecking no\n" >> ~/.ssh/config
 
     - name: Deploy to EC2
       env:
@@ -36,10 +42,7 @@ jobs:
         KEY: ${{ secrets.AWS_EC2_KEY }}
         IMAGE: ${{ secrets.DOCKER_USERNAME }}/my-react-app:latest
       run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa        
-          echo -e "StrictHostKeyChecking no\n" >> ~/.ssh/config
+
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << EOF
           docker pull $IMAGE
           docker stop my-react-app || true
