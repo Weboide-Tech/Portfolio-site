@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.css'
 import CTA from './CTA'
-import img from '../../assets/rehan.jpeg'
+import img from '../../assets/awab.png'
 import HeaderSocials from './HeaderSocials'
 import Typewriter from 'typewriter-effect';
 
